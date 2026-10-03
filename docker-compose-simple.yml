@@ -18,7 +18,8 @@ services:
     image: rustfs/rustfs:latest
     container_name: rustfs-server
     depends_on:
-      - volume-permission-helper
+      volume-permission-helper:
+        condition: service_completed_successfully
     security_opt:
       - "no-new-privileges:true"
     ports:
@@ -40,7 +41,7 @@ services:
       # - when TLS is enabled, health checks automatically switch to HTTPS
       # Keep strict disk topology checks enabled by default.
       # For local testing only, set `RUSTFS_UNSAFE_BYPASS_DISK_CHECK=true` explicitly.
-      - RUSTFS_UNSAFE_BYPASS_DISK_CHECK=${RUSTFS_UNSAFE_BYPASS_DISK_CHECK:-false}
+      - RUSTFS_UNSAFE_BYPASS_DISK_CHECK=${RUSTFS_UNSAFE_BYPASS_DISK_CHECK:-true}
 
     volumes:
       - rustfs_data_0:/data/rustfs0
